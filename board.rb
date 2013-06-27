@@ -1,4 +1,7 @@
-require_relative 'piece.rb'
+# encoding: UTF-8
+
+require './piece.rb'
+require 'colorize'
 
 class Board
   attr_accessor :board, :pieces
@@ -7,18 +10,19 @@ class Board
     @pieces = []
     make_new_board(true)
     fill_pieces
+    draw_board
   end
 
   def make_new_board(fill_board)
     @board = Array.new(8) { Array.new(8) }
 
     if fill_board
-      red_rows = [0,1,2]
+      white_rows = [0,1,2]
       black_rows = [5,6,7]
 
       @board.each_index do |row|
-        fill_row(:rd, row) if red_rows.include?(row)
-        fill_row(:bk, row) if black_rows.include?(row)
+        fill_row(:white, row) if white_rows.include?(row)
+        fill_row(:black, row) if black_rows.include?(row)
       end
     end
   end
@@ -41,11 +45,43 @@ class Board
   end
 
   def valid_spot?(row,col)
-    return true if row % 2 == col % 2
+    return true if row % 2 == col % 2 || !self.board[row][col].nil?
     false
+  end
+
+  def draw_board
+    puts "   0  1  2  3  4  5  6  7"
+    8.times do |row|
+      print "#{row} "
+      8.times do |col|
+        self.pieces.each do |piece|
+          if row == piece.position[0] && col == piece.position[1]
+            if self.board[row][col].king
+              print " W ".colorize(:background => :white) if piece.color == :white
+              print " B ".colorize(:background => :white) if piece.color == :black
+            else
+              print " w ".colorize( :background => :white ) if piece.color == :white
+              print " b ".colorize( :background => :white ) if piece.color == :black
+            end
+          end
+        end
+
+        if self.board[row][col].nil?
+          print "   ".colorize( :background => :white ) if valid_spot?(row,col)
+          print "   ".colorize( :background => :red ) unless valid_spot?(row,col)
+        end
+      end
+      puts
+    end
   end
 end
 
-# b = Board.new
-# b.board.each {|line| p line}
-# p b.pieces
+
+b = Board.new
+b.board[2][2].perform_slide([3,3], b)
+b.board[2][4].perform_slide([3,5], b)
+b.draw_board
+
+# b.pieces.each do |piece|
+#   p piece.position
+# end

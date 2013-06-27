@@ -8,10 +8,20 @@ class Piece
     @king = false
   end
 
+  def promote
+    self.king = true
+  end
+
+  def in_last_row?
+    last_row = (@color == :red) ? 0 : 7
+    return true if self.position[0] == last_row
+    false
+  end
+
   def slide_moves
     direction = (@color == :red) ? -1 : 1
     all_slide_moves = [[direction,-1],[direction,1]]
-    all_slide_moves += [[-direction,-1],[-direction,1]] if @king
+    all_slide_moves += [[-1 * direction,-1],[-1 * direction,1]] if @king
 
     all_slide_moves
   end
@@ -31,8 +41,10 @@ class Piece
     x2, y2 = end_pos[0], end_pos[1]
     x, y = x2 - x1, y2 - y1
 
-    if slide_moves.include?([x,y]) && board[x2][y2].nil?
+    if slide_moves.include?([x,y]) && board.board[x2][y2].nil?
       self.position = end_pos
+      board.board[x2][y2] = self
+      board.board[x1][y1] = nil
     else
       raise "InvalidMoveError"
     end
@@ -66,17 +78,6 @@ class Piece
   def perform_moves!(move_sequence)
 
   end
-
-  def promote
-    self.king = true
-  end
-
-  def in_last_row?
-    last_row = (@color == :red) ? 0 : 7
-    return true if self.position[0] == last_row
-    false
-  end
-
 end
 
 # piece.promote if piece.in_last_row?
