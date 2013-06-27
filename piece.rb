@@ -32,15 +32,16 @@ class Piece
   def perform_jump
   end
 
+  def promote
+    self.king = true
+  end
+
   def in_last_row?
     last_row = (@color == :red) ? 0 : 7
     return true if self.position[0] == last_row
     false
   end
 
-  def promote
-    self.king = true
-  end
 end
 
-piece.promote if piece.in_last_row?
+# piece.promote if piece.in_last_row?

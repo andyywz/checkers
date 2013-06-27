@@ -1,9 +1,12 @@
+require_relative 'piece.rb'
+
 class Board
-  attr_accessor :board
+  attr_accessor :board, :pieces
 
   def initialize
     @pieces = []
     make_new_board(true)
+    fill_pieces
   end
 
   def make_new_board(fill_board)
@@ -21,13 +24,28 @@ class Board
   end
 
   def fill_row(color, row)
-    puts "got here"
     @board[row].each_index do |col|
-      next unless row % 2 == col % 2
-      @board[row][col] = color
+      next unless valid_spot?(row,col)
+      @board[row][col] = Piece.new(color, [row,col])
     end
+  end
+
+  def fill_pieces
+    @board.each_index do |row|
+      @board.each_index do |col|
+        next unless valid_spot?(row,col)
+        @pieces << @board[row][col]
+      end
+    end
+    @pieces = @pieces.flatten.compact
+  end
+
+  def valid_spot?(row,col)
+    return true if row % 2 == col % 2
+    false
   end
 end
 
 # b = Board.new
 # b.board.each {|line| p line}
+# p b.pieces
