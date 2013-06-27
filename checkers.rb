@@ -1,3 +1,10 @@
+require './player.rb'
+require './board.rb'
+require './piece.rb'
+
+class InvalidMoveError < StandardError
+end
+
 class Checkers
   def initialize
     @player1 = HumanPlayer.new(:white)
@@ -10,34 +17,34 @@ class Checkers
     player = @player1
 
     while true
+      @board.draw_board
       begin
-        start_pos, end_pos = player.turn
         player_color = player.color
         enemy_color = player.color == :white ? :black : :white
+        move_sequence = player.turn
+        start_pos = move_sequence[0]
+        if @board.non_empty_spot?(start_pos[0],start_pos[1])
+          piece = @board.board[start_pos[0]][start_pos[1]]
 
-        if @board.valid_spot?(start_pos[0],start_pos[1])
-          piece = @board[start_pos[0]][start_pos[1]]
+          if piece.color != player_color
+            puts "Not your color!"
+            raise ArgumentError.new "Invalid move!"
+          end
+
+          piece.valid_move_seq?(move_sequence, @board)
+          piece.perform_moves(move_sequence, @board)
 
         else
-          raise ArgumentError.new "Invalid move!"
+          raise InvalidMoveError.new "No piece in start_pos"
         end
-      rescue ArgumentError => e
+      rescue InvalidMoveError => e
         puts e
         retry
       end
+      @board.draw_board
       player = player == @player1 ? @player2 : @player1
     end
   end
 end
 
-def draw
-puts "  0 1 2 3 4 5 6 7"
-8.times do |row|
-  print "#{row}  "
-  8.times do |col|
-    print "  ".colorize( :background => :black ) if row % 2 == col % 2
-    print "  ".colorize( :background => :red ) unless row % 2 == col % 2
-  end
-  puts
-end
-end
+Checkers.new

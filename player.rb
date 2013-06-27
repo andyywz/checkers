@@ -10,32 +10,27 @@ class HumanPlayer < Player
   def turn
     begin
       puts "#{self.color.to_s.capitalize}'s turn"
-      puts "Choose a square to move from (e.g. 0,0):"
-      start_pos = prompt_pos
+      puts "Enter move sequence (e.g. 22 31): "
+      move_sequence = prompt_pos
     rescue ArgumentError.new => e
-      puts "Please limit your input (e.g. 0,0 -> 7,7)."
+      puts "Please limit your input (e.g. 00 -> 77)."
       retry
     end
 
-    begin
-      puts "Choose a square to move to (e.g. 1,5):"
-      end_pos = prompt_pos
-    rescue ArgumentError.new => e
-      puts "Please limit your input (e.g. 0,0 -> 7,7)."
-      retry
-    end
-
-    [start_pos,end_pos]
+    move_sequence
   end
 
   def prompt_pos
-    pos = gets.chomp.split(',')
+    move_seq = gets.chomp.scan(/[0-7][0-7]/)
 
-    unless pos.length == 2 && pos[0].between?("0","7") && pos[1].between?("0","7")
+    if move_seq.length < 2
       raise ArgumentError.new "Input invalid!"
     end
 
-    [pos[0].to_i, pos[1].to_i]
+    move_seq.map! do |pair|
+      pair.split("").map! {|i| i.to_i}
+    end
+    move_seq
   end
 end
 
