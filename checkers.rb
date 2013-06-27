@@ -31,9 +31,9 @@ class Checkers
             raise InvalidMoveError.new "Not your color!"
           end
 
-          piece.valid_move_seq?(move_sequence, @board)
-          puts "im out"
-          piece.perform_moves(move_sequence, @board)
+          valid = piece.valid_move_seq?(move_sequence, @board)
+          piece.perform_moves(move_sequence, @board) if valid
+          piece.promote
 
         else
           raise InvalidMoveError.new "No piece in start position"

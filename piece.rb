@@ -40,11 +40,8 @@ class Piece
 
   def perform_slide(end_pos, board)
     x1, y1 = self.position[0], self.position[1]
-    p [x1,y1]
     x2, y2 = end_pos[0], end_pos[1]
-    p [x2,y2]
     x, y = x2 - x1, y2 - y1
-
 
     if slide_moves.include?([x,y]) && board.board[x2][y2].nil?
       self.position = end_pos
@@ -83,10 +80,12 @@ class Piece
 
   def valid_move_seq?(move_sequence, board_obj)
     test_board = board_obj.duplicate
+    test_piece = test_board.board[position[0]][position[1]]
     begin
-      perform_moves!(move_sequence, test_board)
+      test_piece.perform_moves!(move_sequence, test_board)
+      return true
     rescue
-      raise InvalidMoveError.new "Invalid move sequence"
+      return false
     end
   end
 
@@ -112,7 +111,8 @@ class Piece
   end
 
   def dup
-    self.class.new(color, position, king)
+    x,y = position
+    self.class.new(color, [x,y] , king)
   end
 
 end

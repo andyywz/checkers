@@ -83,35 +83,30 @@ class Board
   end
 
   def duplicate
-    test_board = Board.new(false)
+    new_board = Board.new(false)
 
-    8.times do |row|
-      8.times do |col|
-        if self.non_empty_spot?(row,col)
-          test_board.board[row][col] = self.board[row][col].dup
-        else
-          test_board.board[row][col] = nil
-        end
+    self.board.each_with_index do |row, i|
+      row.each_with_index do |piece, j|
+        new_board.board[i][j] = piece.dup unless piece.nil?
       end
     end
 
-    test_board.fill_pieces # @pieces = [oiwnefoinwef]
-    test_board
+    new_board
   end
 end
 
 
-b = Board.new
-b.board[2][2].perform_slide([3,3], b)
-b.draw_board
-
-new_b = b.duplicate
+# b = Board.new
+# b.board[2][2].perform_slide([3,3], b)
+# b.draw_board
+#
+# new_b = b.duplicate
 
 # new_b.pieces
 # new_b.draw_board
-new_b.board[5][5].perform_slide([4,4], b)
-new_b.draw_board
-b.draw_board
+# new_b.board[5][5].perform_slide([4,4], b)
+# new_b.draw_board
+# b.draw_board
 
 # b.board[5][5].perform_slide([4,4], b)
 # p b.board[3][3].position
