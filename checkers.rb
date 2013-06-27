@@ -48,7 +48,6 @@ class Checkers
   end
 end
 
-# Checkers.new
 
 if __FILE__ == $0
   Checkers.new

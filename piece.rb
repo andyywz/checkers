@@ -116,12 +116,3 @@ class Piece
   end
 
 end
-
-# piece.promote if piece.in_last_row?
-
-# valid_slides = []
-# slide_moves.each do |move|
-#   x, y = (move[0] + self.position[0]), (move[1] + self.position[1])
-#   valid_slides << [x,y] if x.between?(0,7) and y.between?(0,7)
-# end
-# valid_slides

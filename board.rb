@@ -94,35 +94,3 @@ class Board
     new_board
   end
 end
-
-
-# b = Board.new
-# b.board[2][2].perform_slide([3,3], b)
-# b.draw_board
-#
-# new_b = b.duplicate
-
-# new_b.pieces
-# new_b.draw_board
-# new_b.board[5][5].perform_slide([4,4], b)
-# new_b.draw_board
-# b.draw_board
-
-# b.board[5][5].perform_slide([4,4], b)
-# p b.board[3][3].position
-# b.board[3][3].perform_jump([5,5], b)
-#
-# b.board[5][3].perform_slide([4,4], b)
-# b.board[6][4].perform_slide([5,3], b)
-# b.board[7][3].perform_slide([6,4], b)
-# b.board[5][5].perform_jump([7,3], b)
-# b.pieces.each {|piece| piece.promote }
-#
-# b.board[5][1].perform_slide([4,0], b)
-# b.board[7][3].perform_jump([5,1], b)
-# b.draw_board
-
-# b.pieces.each do |piece|
-#   p piece.position
-# end
-
