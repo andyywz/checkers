@@ -34,13 +34,7 @@ class Board
   end
 
   def fill_pieces
-    @board.each_index do |row|
-      @board.each_index do |col|
-        next unless valid_spot?(row,col)
-        @pieces << @board[row][col]
-      end
-    end
-    @pieces = @pieces.flatten.compact
+    @pieces = @board.flatten.compact
   end
 
   def valid_spot?(row,col)
@@ -88,12 +82,12 @@ class Board
     end
   end
 
-  def dup
+  def duplicate
     test_board = Board.new(false)
 
     8.times do |row|
       8.times do |col|
-        if non_empty_spot?(row,col)
+        if self.non_empty_spot?(row,col)
           test_board.board[row][col] = self.board[row][col].dup
         else
           test_board.board[row][col] = nil
@@ -101,23 +95,23 @@ class Board
       end
     end
 
-    test_board.fill_pieces
+    test_board.fill_pieces # @pieces = [oiwnefoinwef]
     test_board
   end
 end
 
 
-# b = Board.new
-# b.board[2][2].perform_slide([3,3], b)
-# b.draw_board
-#
-# new_b = b.dup
+b = Board.new
+b.board[2][2].perform_slide([3,3], b)
+b.draw_board
+
+new_b = b.duplicate
 
 # new_b.pieces
 # new_b.draw_board
-# new_b.board[5][5].perform_slide([4,4], b)
-# new_b.board.draw_board
-# b.draw_board
+new_b.board[5][5].perform_slide([4,4], b)
+new_b.draw_board
+b.draw_board
 
 # b.board[5][5].perform_slide([4,4], b)
 # p b.board[3][3].position
@@ -136,3 +130,4 @@ end
 # b.pieces.each do |piece|
 #   p piece.position
 # end
+

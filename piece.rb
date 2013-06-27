@@ -1,4 +1,5 @@
 require './checkers.rb'
+require './board.rb'
 
 class Piece
   attr_accessor :color, :position, :king
@@ -39,15 +40,18 @@ class Piece
 
   def perform_slide(end_pos, board)
     x1, y1 = self.position[0], self.position[1]
+    p [x1,y1]
     x2, y2 = end_pos[0], end_pos[1]
+    p [x2,y2]
     x, y = x2 - x1, y2 - y1
+
 
     if slide_moves.include?([x,y]) && board.board[x2][y2].nil?
       self.position = end_pos
       board.board[x2][y2] = self
       board.board[x1][y1] = nil
     else
-      raise "InvalidMoveError"
+      raise InvalidMoveError.new "I can't slide like that!!"
     end
   end
 
@@ -56,24 +60,20 @@ class Piece
     x2, y2 = end_pos[0], end_pos[1]
     x, y = x2 - x1, y2 - y1
 
-    p [x,y]
     if jump_moves.include?([x,y]) && board.board[x2][y2].nil?
       middle_piece = board.board[(x1 + x2) / 2][(y1 + y2) / 2]
     else
-      puts "I failed 1"
-      return
+      raise InvalidMoveError.new "I can't jump like that!!"
     end
 
     if !middle_piece.nil? && middle_piece.color != self.color
-      puts "im here"
       self.position = end_pos
       board.pieces.delete(middle_piece)
       board.board[x2][y2] = self
       board.board[x1][y1] = nil
       board.board[(x1 + x2) / 2][(y1 + y2) / 2] = nil
     else
-      puts "I failed 2"
-      return
+      raise InvalidMoveError.new "I need to kill something!!"
     end
   end
 
@@ -82,7 +82,7 @@ class Piece
   end
 
   def valid_move_seq?(move_sequence, board_obj)
-    test_board = board_obj.dup
+    test_board = board_obj.duplicate
     begin
       perform_moves!(move_sequence, test_board)
     rescue
@@ -93,7 +93,7 @@ class Piece
 
   def perform_moves!(move_sequence,board_obj)
     #make moves on a board
-    if move_sequence.length != 2
+    if move_sequence.length == 2
       start_pos, end_pos = move_sequence
       dy = (start_pos[1] - end_pos[1]).abs
       if dy == 1

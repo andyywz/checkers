@@ -1,6 +1,7 @@
 require './player.rb'
 require './board.rb'
 require './piece.rb'
+require 'colorize'
 
 class InvalidMoveError < StandardError
 end
@@ -27,15 +28,15 @@ class Checkers
           piece = @board.board[start_pos[0]][start_pos[1]]
 
           if piece.color != player_color
-            puts "Not your color!"
-            raise ArgumentError.new "Invalid move!"
+            raise InvalidMoveError.new "Not your color!"
           end
 
           piece.valid_move_seq?(move_sequence, @board)
+          puts "im out"
           piece.perform_moves(move_sequence, @board)
 
         else
-          raise InvalidMoveError.new "No piece in start_pos"
+          raise InvalidMoveError.new "No piece in start position"
         end
       rescue InvalidMoveError => e
         puts e
@@ -47,4 +48,8 @@ class Checkers
   end
 end
 
-Checkers.new
+# Checkers.new
+
+if __FILE__ == $0
+  Checkers.new
+end

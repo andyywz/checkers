@@ -24,7 +24,7 @@ class HumanPlayer < Player
     move_seq = gets.chomp.scan(/[0-7][0-7]/)
 
     if move_seq.length < 2
-      raise ArgumentError.new "Input invalid!"
+      raise InvalidMoveError.new "Input invalid!"
     end
 
     move_seq.map! do |pair|
