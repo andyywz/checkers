@@ -1,3 +1,5 @@
+#REV- this is some slick code
+
 require './checkers.rb'
 require './board.rb'
 

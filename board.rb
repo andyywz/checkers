@@ -1,4 +1,5 @@
 # encoding: UTF-8
+#REV- Overall, Really slick!
 
 require './piece.rb'
 require 'colorize'
@@ -12,6 +13,7 @@ class Board
     fill_pieces
   end
 
+  #REV- The solution code uses the fill_row way to fill teh board, but you could also just hard-code it. 
   def make_new_board(fill_board)
     @board = Array.new(8) { Array.new(8) }
 
@@ -33,6 +35,7 @@ class Board
     end
   end
 
+  #REV- nice
   def fill_pieces
     @pieces = @board.flatten.compact
   end
@@ -81,6 +84,7 @@ class Board
       puts
     end
   end
+
 
   def duplicate
     new_board = Board.new(false)
